@@ -41,7 +41,7 @@ set:
 	cd $(SETDIR); ../single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_C) -seed=$(SEED)
 	cd $(SETDIR); ../single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_D) -seed=$(SEED)
 
-COUNT = 15
+COUNT = 150
 BATCHDIR = rand-$(COUNT)-$(SEED)
 
 .PHONY: random
