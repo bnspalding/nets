@@ -3,8 +3,11 @@ package main
 import (
 	"flag"
 	"image/color"
+	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/bnspalding/img-gen/nets/nets"
 )
@@ -28,33 +31,53 @@ func main() {
 	var size int
 	flag.IntVar(&size, "size", 320, "pixel dimensions of image (square)")
 
-	var fileName string
-	flag.StringVar(&fileName, "name", "", "file name to reconstruct colors")
-
 	flag.Parse()
 
-	colors, seedInput := parseColors(fileName)
-
-	config := nets.Config{
-		Size:               size,
-		Name:               "enhanced",
-		StartCornerPercent: .5,
-		Seed:               seedInput,
-		Oversize:           oversize,
-
-		Background: backgroundColor,
-		Color1:     colors[0],
-		Color2:     colors[1],
-		Color3:     colors[2],
-
-		Debug:    false,
-		LongName: true,
-		FromEdge: fromEdge,
+	pwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
 	}
-	nets.Draw(&config)
+
+	files, err := ioutil.ReadDir(pwd)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, f := range files {
+		if !strings.HasSuffix(f.Name(), ".png") {
+			continue
+		}
+		if !isBigger(size, f.Name()) {
+			continue
+		}
+		colors, seedInput := parse(
+			strings.TrimSuffix(f.Name(), ".png"))
+		config := nets.Config{
+			Size:               size,
+			Name:               "nets",
+			StartCornerPercent: .5,
+			Seed:               seedInput,
+			Oversize:           oversize,
+
+			Background: backgroundColor,
+			Color1:     colors[0],
+			Color2:     colors[1],
+			Color3:     colors[2],
+
+			Debug:    false,
+			LongName: true,
+			FromEdge: fromEdge,
+		}
+		nets.Draw(&config)
+		err = os.Remove(f.Name())
+		if err != nil {
+			panic(err)
+		}
+	}
+
 }
 
-func parseColors(f string) ([]color.NRGBA, int64) {
+func parse(f string) ([]color.NRGBA, int64) {
 	colors := make([]color.NRGBA, 0)
 	var sd int64
 	segments := strings.Split(f, "-")
@@ -100,4 +123,29 @@ func parseSeed(s string) int64 {
 		panic(err)
 	}
 	return sd
+}
+
+func isBigger(size int, fname string) bool {
+	fsize := getSize(fname)
+	return size > fsize
+}
+
+func getSize(fname string) int {
+	segments := strings.Split(fname, "-")
+	for _, seg := range segments {
+		if seg[0] != 's' {
+			continue
+		}
+		if !unicode.IsDigit(rune(seg[1])) {
+			continue
+		}
+		size, err := strconv.Atoi(seg[1:])
+		if err != nil {
+			panic(err)
+		}
+		return size
+	}
+
+	panic("no size parsed from file name")
+	return 0
 }
