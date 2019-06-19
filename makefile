@@ -47,10 +47,10 @@ SET_D = -c2r=242 -c2g=170 -c2b=255
 .PHONY: set
 set:
 	mkdir $(SETDIR)
-	cd $(SETDIR); ../single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_A) -seed=$(SEED)
-	cd $(SETDIR); ../single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_B) -seed=$(SEED)
-	cd $(SETDIR); ../single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_C) -seed=$(SEED)
-	cd $(SETDIR); ../single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_D) -seed=$(SEED)
+	cd $(SETDIR); ../build/single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_A) -seed=$(SEED)
+	cd $(SETDIR); ../build/single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_B) -seed=$(SEED)
+	cd $(SETDIR); ../build/single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_C) -seed=$(SEED)
+	cd $(SETDIR); ../build/single -size=$(SIZE) -longName=true -out=$(SETNAME) $(SET_D) -seed=$(SEED)
 
 COUNT = 150
 BATCHDIR = rand-$(COUNT)-$(SEED)

@@ -8,7 +8,7 @@ import (
 	"github.com/bnspalding/img-gen/nets"
 )
 
-var backgroundColor = color.NRGBA{128, 128, 128, 0}
+var backgroundColor = color.NRGBA{0, 0, 0, 255}
 
 const lineAlpha = 20
 const startCornerPercent = .5
