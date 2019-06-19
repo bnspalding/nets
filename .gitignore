@@ -2,3 +2,4 @@
 *.tiff
 *.xcf
 *.svg
+build/
