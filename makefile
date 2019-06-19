@@ -21,6 +21,17 @@ buildR:
 	mv random/random build/random
 	./build/random -n=1
 
+.PHONY: buildAll
+buildAll:
+	cd single; go build -o="single"
+	mv single/single build/single
+	cd random; go build -o="random"
+	mv random/random build/random
+	cd enhance; go build -o="enhance"
+	mv enhance/enhance build/enhance
+	cd enhance-convert; go build -o="enhance-convert"
+	mv enhance-convert/enhance-convert build/enhance-convert
+
 .PHONY: keep
 keep:
 	cp out.png keep.png

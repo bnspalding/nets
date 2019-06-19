@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bnspalding/img-gen/nets/nets"
+	"github.com/bnspalding/img-gen/nets"
 )
 
 var backgroundColor = color.NRGBA{128, 128, 128, 0}
